@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miss You App</title>
+</head>
+<body>
+    <h1>Miss You App</h1>
+    <input type="text" id="pinInput" placeholder="Enter PIN">
+    <button id="registerButton">Register</button>
+    <button id="missYouButton" disabled>Send Miss You</button>
+    <audio id="missYouSound" src="missyou.mp3"></audio>
+
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <script>
+        const socket = io();
+        const pinInput = document.getElementById('pinInput');
+        const registerButton = document.getElementById('registerButton');
+        const missYouButton = document.getElementById('missYouButton');
+        const missYouSound = document.getElementById('missYouSound');
+
+        registerButton.addEventListener('click', () => {
+            const pin = pinInput.value;
+            if (pin) {
+                fetch('/api/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ pin })
+                }).then(response => response.json())
+                  .then(data => {
+                      console.log('Registered:', data);
+                      missYouButton.disabled = false;
+                  });
+            }
+        });
+
+        missYouButton.addEventListener('click', () => {
+            const pin = pinInput.value;
+            fetch('/api/sendMissYou', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ pin })
+            }).then(response => response.json())
+              .then(data => {
+                  console.log('Miss You sent:', data);
+              });
+        });
+
+        socket.on('missYou', () => {
+            missYouSound.play();
+        });
+    </script>
+</body>
+</html>
