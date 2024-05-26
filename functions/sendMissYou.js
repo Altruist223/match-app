@@ -1,5 +1,5 @@
-const { serverless } = require('netlify-serverless-http');
 const express = require('express');
+const serverless = require('netlify-lambda');
 const app = express();
 
 let connectedDevices = {};
@@ -16,4 +16,4 @@ app.post('/sendMissYou', (req, res) => {
     }
 });
 
-exports.handler = serverless(app);
+module.exports.handler = serverless(app);

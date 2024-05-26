@@ -11,6 +11,7 @@
   "description": "",
   "dependencies": {
     "express": "^4.19.2",
+    "netlify-lambda": "^2.0.16",
     "socket.io": "^4.7.5"
   }
 }

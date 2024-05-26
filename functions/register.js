@@ -1,5 +1,5 @@
-const { serverless } = require('netlify-serverless-http');
 const express = require('express');
+const serverless = require('netlify-lambda');
 const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
@@ -32,4 +32,4 @@ io.on('connection', (socket) => {
     });
 });
 
-exports.handler = serverless(app);
+module.exports.handler = serverless(app);
